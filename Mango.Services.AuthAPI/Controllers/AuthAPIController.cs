@@ -30,6 +30,10 @@ namespace Mango.Services.AuthAPI.Controllers
                 return BadRequest(_response);
             }
 
+            /* 
+             * Bhrugen places the PublishMessage here to send message to Service bus... ???
+             */
+
             return Ok(_response);
         }
 

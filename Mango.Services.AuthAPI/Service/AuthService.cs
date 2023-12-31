@@ -1,4 +1,5 @@
-﻿using Mango.Services.AuthAPI.Data;
+﻿using Mango.MessageBus;
+using Mango.Services.AuthAPI.Data;
 using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Models.Dto;
 using Mango.Services.AuthAPI.Service.IService;
@@ -12,17 +13,23 @@ namespace Mango.Services.AuthAPI.Service
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly IMessageBus _messageBus;
+        private IConfiguration _configuration;
 
         public AuthService(
             AppDbContext db, 
             UserManager<ApplicationUser> userManager, 
             RoleManager<IdentityRole> roleManager,
-            IJwtTokenGenerator jwtTokenGenerator)
+            IJwtTokenGenerator jwtTokenGenerator,
+            IMessageBus messageBus,
+            IConfiguration configuration)
         {
             _db = db;
             _userManager = userManager;
             _roleManager = roleManager;
             _jwtTokenGenerator = jwtTokenGenerator;
+            _messageBus = messageBus;
+            _configuration = configuration;
         }
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
@@ -75,6 +82,8 @@ namespace Mango.Services.AuthAPI.Service
                 {
                     var userToReturn = _db.ApplicationUsers.First(u => u.UserName == registrationRequestDto.Email);
 
+                    await SendEmailForRegisteredUser(user.Email);
+
                     //UserDto userDto = new()
                     //{
                     //    Email = userToReturn.Email,
@@ -114,5 +123,20 @@ namespace Mango.Services.AuthAPI.Service
 
             return false;
         }
+
+        private async Task<bool> SendEmailForRegisteredUser(string email)
+        {
+            try
+            {
+                await _messageBus.PublishMessage(email, _configuration.GetValue<string>("TopicAndQueueNames:EmailRegisteredUserQueue"));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return false;
+        }
+
     }
 }

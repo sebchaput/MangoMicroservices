@@ -74,6 +74,9 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+// Add following instruction after creating /wwwroot/ProductImages folders
+app.UseStaticFiles();
+
 app.MapControllers();
 
 // To execute any pending migration at program startup

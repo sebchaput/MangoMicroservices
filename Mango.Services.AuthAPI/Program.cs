@@ -1,3 +1,4 @@
+using Mango.MessageBus;
 using Mango.Services.AuthAPI.Data;
 using Mango.Services.AuthAPI.Models;
 using Mango.Services.AuthAPI.Service;
@@ -18,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(option =>
     .EnableSensitiveDataLogging()
     .EnableDetailedErrors();
 });
+
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 // Retreive configurations from appsettings and set properties of class JwtOptions
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("ApiSettings:JwtOptions"));

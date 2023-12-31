@@ -15,7 +15,7 @@ namespace Mango.Web.Service
 
         public async Task<ResponseDto?> AssignRoleAsync(RegistrationRequestDto registrationRequestDto)
         {
-            return await _baseService.SendAsync(new Models.RequestDto()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
                 Data = registrationRequestDto,
@@ -25,7 +25,7 @@ namespace Mango.Web.Service
 
         public async Task<ResponseDto?> LoginAsync(LoginRequestDto loginRequestDto)
         {
-            return await _baseService.SendAsync(new Models.RequestDto()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
                 Data = loginRequestDto,
@@ -35,7 +35,7 @@ namespace Mango.Web.Service
 
         public async Task<ResponseDto?> RegisterAsync(RegistrationRequestDto registrationRequestDto)
         {
-            return await _baseService.SendAsync(new Models.RequestDto()
+            return await _baseService.SendAsync(new RequestDto()
             {
                 ApiType = SD.ApiType.POST,
                 Data = registrationRequestDto,

@@ -32,8 +32,10 @@ namespace Mango.Services.ProductAPI.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ImageLocalPath")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
